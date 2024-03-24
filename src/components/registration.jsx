@@ -20,12 +20,12 @@ export const loginloader = ({request}) =>{
 return new URL(request.url).searchParams.get("message")
 }
 
-export const action = async({request}) =>{
-  console.log("testing the action")
-  const formData = await request.formData()
-  const ba_name = formData.get("ba_name")
-  const ba_phone = formData.get("ba_phone")
-  const ba_location = formData.get("ba_location")
+export const action = async ({ request }) => {
+  console.log("testing the action");
+  const formData = await request.formData();
+  const ba_name = formData.get("ba_name");
+  const ba_phone = formData.get("ba_phone");
+  const ba_location = formData.get("ba_location");
   if (!ba_location || !ba_name || !ba_phone) {
     return "Please fill all the required fields";
   }
@@ -36,7 +36,12 @@ export const action = async({request}) =>{
   console.log(formdata.get("ba_name"));
   // const pathname = new URL(request.url).searchParams.get("redirectTo") || "/survey"
   try {
-    const data = await loginUser(formdata);
+    const ba_name = formdata.get("ba_name");
+    const ba_phone = formdata.get("ba_phone");
+    const ba_location = formdata.get("ba_location");
+    const workout = { ba_name, ba_phone, ba_location };
+    const data = await loginUser(workout);
+    console.log(data);
     if (data) {
       const loginData = JSON.stringify(data);
       localStorage.setItem("Auth", loginData);
@@ -58,80 +63,81 @@ export const action = async({request}) =>{
     console.error("err", err.syntaxError);
     return err.message;
   }
+};
 
-}
-
-const RegistrationPage = () =>{
+const RegistrationPage = () => {
   const loginLoaderMessage = useLoaderData();
-  console.log(loginLoaderMessage)
+  console.log(loginLoaderMessage);
 
-  const navigation  = useNavigation();
-console.log(navigation);
+  const navigation = useNavigation();
+  console.log(navigation);
 
-const errorMessage = useActionData();
-console.log(errorMessage)
+  const errorMessage = useActionData();
+  console.log(errorMessage);
 
-const storeBa = localStorage.getItem("Auth")
-const storeBaTwo = JSON.parse(storeBa)
-console.log(storeBaTwo)
+  const storeBa = localStorage.getItem("Auth");
+  const storeBaTwo = JSON.parse(storeBa);
+  console.log(storeBaTwo);
 
+  return (
+    <>
+      <div className="container">
+        <div className="card-panel card-relative">
+          <div className="parentError">
+            <span>
+              {" "}
+              {loginLoaderMessage === null ? (
+                ""
+              ) : (
+                <i className="material-icons">error</i>
+              )}
+            </span>
+            <p className="login_errmessage">
+              {loginLoaderMessage && !errorMessage && loginLoaderMessage}
+              {errorMessage && errorMessage}
+            </p>
+          </div>
+          <Form className="form" method="post" replace>
+            <label htmlFor="ba_name">Name</label>
+            <input
+              type="text"
+              name="ba_name"
+              id="ba_name"
+              placeholder="Enter name"
+              defaultValue={storeBaTwo === null ? "" : storeBaTwo.user.ba_name}
+            />
+            <label htmlFor="ba_phone">Phone Numbers</label>
+            <input
+              type="tel"
+              name="ba_phone"
+              id="ba_phone"
+              placeholder="Tel e.g 0728**"
+              defaultValue={storeBaTwo === null ? "" : storeBaTwo.user.ba_phone}
+            />
+            <label htmlFor="ba_location">Location</label>
+            <input
+              type="text"
+              name="ba_location"
+              id="ba_location"
+              placeholder="Enter location"
+              defaultValue={
+                storeBaTwo === null ? "" : storeBaTwo.user.ba_location
+              }
+            />
 
-
-
-
-
-    return(
-        <>
-         <div className="container">
-      <div className="card-panel card-relative">
-        <div className="parentError">
-          <span> {loginLoaderMessage === null ? "" : <i className="material-icons">error</i>}</span>
-        <p className="login_errmessage">
-        {loginLoaderMessage && !errorMessage && loginLoaderMessage}
-        {errorMessage && errorMessage}
-       </p>
+            <span className="flex_button">
+              <button
+                className="btn waves-effect color_change"
+                disabled={navigation.state === "submitting"}
+              >
+                {navigation.state === "submitting" ? "registering" : "Register"}
+              </button>
+            </span>
+          </Form>
         </div>
-        <Form className="form"  method="post" replace>
-
-          <label htmlFor="ba_name">Name</label>
-          <input
-            type="text"
-            name="ba_name"
-            id="ba_name"
-            placeholder="Enter name"
-            defaultValue = {storeBaTwo === null ? "" : storeBaTwo.data.ba_name}
-          />
-          <label htmlFor="ba_phone">Phone Numbers</label>
-          <input
-            type="tel"
-            name="ba_phone"
-            id="ba_phone"
-            placeholder="Tel e.g 0728**"
-            defaultValue = {storeBaTwo === null ? "" : storeBaTwo.data.ba_phone}
-          />
-          <label htmlFor="ba_location">Location</label>
-          <input
-            type="text"
-            name="ba_location"
-            id="ba_location"
-            placeholder="Enter location"
-            defaultValue = {storeBaTwo === null ? "" : storeBaTwo.data.ba_location}
-          />
-
-          <span className="flex_button">
-            <button
-              className="btn waves-effect color_change"
-              disabled = {navigation.state === "submitting"}
-            >
-              {navigation.state === "submitting" ? "registering" : "Register"}
-            </button>
-
-          </span>
-        </Form>
       </div>
-    </div>
-        </>
-    )
-}
+    </>
+  );
+};
 
 export default RegistrationPage;
