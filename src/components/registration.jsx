@@ -26,41 +26,38 @@ export const action = async({request}) =>{
   const ba_name = formData.get("ba_name")
   const ba_phone = formData.get("ba_phone")
   const ba_location = formData.get("ba_location")
-  if(!ba_location || !ba_name || !ba_phone){
-   return "Please fill all the required fields"
+  if (!ba_location || !ba_name || !ba_phone) {
+    return "Please fill all the required fields";
   }
-   const formdata = new FormData()
-   formdata.append("ba_name",ba_name)
-   formdata.append("ba_location",ba_location)
-   formdata.append("ba_phone",ba_phone)
+  const formdata = new FormData();
+  formdata.append("ba_name", ba_name);
+  formdata.append("ba_location", ba_location);
+  formdata.append("ba_phone", ba_phone);
+  console.log(formdata.get("ba_name"));
   // const pathname = new URL(request.url).searchParams.get("redirectTo") || "/survey"
   try {
-    const data = await loginUser(formdata)
-    if(data){
+    const data = await loginUser(formdata);
+    if (data) {
       const loginData = JSON.stringify(data);
-  localStorage.setItem("Auth", loginData)
-   setTimeout(()  => {
-    const MySwal = withReactContent(Swal)
-    MySwal.fire({
-    html: <i>You have registered successfully!</i>,
-    icon: 'success'
-   })
-   }, 2000)
+      localStorage.setItem("Auth", loginData);
+      setTimeout(() => {
+        const MySwal = withReactContent(Swal);
+        MySwal.fire({
+          html: <i>You have registered successfully!</i>,
+          icon: "success",
+        });
+      }, 2000);
     }
 
     // console.log(pathname)
     // const response = redirect(pathname)
     // response.body = true
     // console.log(pathname)
-    return redirect("/survey")
-
-
-
-
-}catch(err){
- console.error('err', err.syntaxError)
-  return err.message
-}
+    return redirect("/survey");
+  } catch (err) {
+    console.error("err", err.syntaxError);
+    return err.message;
+  }
 
 }
 

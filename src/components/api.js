@@ -1,8 +1,9 @@
 export async function loginUser(creds) {
-    const res = await fetch("https://api6.staging.iguru.co.ke/api/baregister",
-        { method: "POST", body:creds }
-    )
-    const data = await res.json()
+    const res = await fetch("http://localhost:3000/customer_registration", {
+      method: "POST",
+      body: creds,
+    });
+    const data = await res.json();
 
     if (!res.ok) {
         throw {
