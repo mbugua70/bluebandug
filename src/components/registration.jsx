@@ -41,7 +41,6 @@ export const action = async ({ request }) => {
     const ba_location = formdata.get("ba_location");
     const workout = { ba_name, ba_phone, ba_location };
     const data = await loginUser(workout);
-    console.log(data);
     if (data) {
       const loginData = JSON.stringify(data);
       localStorage.setItem("Auth", loginData);
@@ -61,6 +60,7 @@ export const action = async ({ request }) => {
     return redirect("/survey");
   } catch (err) {
     console.error("err", err.syntaxError);
+    console.log(err.message);
     return err.message;
   }
 };
@@ -77,7 +77,6 @@ const RegistrationPage = () => {
 
   const storeBa = localStorage.getItem("Auth");
   const storeBaTwo = JSON.parse(storeBa);
-  console.log(storeBaTwo);
 
   return (
     <>

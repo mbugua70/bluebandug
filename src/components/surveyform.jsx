@@ -65,7 +65,6 @@ const SurveyForm = () => {
     // const ba_name = storeTwo.data.ba_name;
     // const ba_phone = storeTwo.data.ba_phone;
 
-    console.log("submitted data:", data);
     // const formdata = new FormData();
 
     // for (const key in data) {
@@ -80,23 +79,17 @@ const SurveyForm = () => {
 
     try {
       const response = await surveyForm(data);
-      if(response){
+      if (response) {
         const MySwal = withReactContent(Swal);
         MySwal.fire({
           html: <i>Your data have been submitted successfully!</i>,
           icon: "success",
         });
       }
-
     } catch (err) {
-      console.log("Error is:", err);
       const MySwal = withReactContent(Swal);
       MySwal.fire({
-        html: (
-          <i>
-            Network error. Please check your internet connection and try again!
-          </i>
-        ),
+        html: <i>{err.message}</i>,
         icon: "error",
       });
     }
@@ -106,7 +99,6 @@ const SurveyForm = () => {
   const handleNonUser = (e) => {
     const numberTwo = e.target.value;
     // const numberTwo = getValues("brand_category_2")
-    console.log(numberTwo);
     setvalueCheck((prev) => {
       return {
         ...prev,
@@ -144,8 +136,6 @@ const SurveyForm = () => {
       };
     });
   };
-
-  console.log(valueCheck.number_Two);
 
   React.useEffect(() => {
     if (isSubmitSuccessful) {

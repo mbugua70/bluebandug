@@ -7,7 +7,6 @@ export async function loginUser(creds) {
     body: JSON.stringify(creds),
   });
   const data = await res.json();
-  console.log(data);
   if (!res.ok) {
     throw {
       message: data.message,
@@ -19,10 +18,8 @@ export async function loginUser(creds) {
 }
 
 export async function surveyForm(test) {
-  console.log(test);
   const storeOne = localStorage.getItem("Auth");
   const storeTwo = JSON.parse(storeOne);
-  console.log(storeTwo.user._id);
   const userId = storeTwo.user._id;
   const res = await fetch("http://localhost:3000/customer_report", {
     method: "POST",
@@ -34,7 +31,6 @@ export async function surveyForm(test) {
     body: JSON.stringify(test),
   });
   const data = await res.json();
-  console.log(data);
   if (!res.ok) {
     throw {
       message: data.message,
@@ -57,7 +53,6 @@ export async function getUserData() {
   await sleep(1000);
   const storeOne = localStorage.getItem("Auth");
   const storeTwo = JSON.parse(storeOne);
-  console.log(storeTwo.user);
   const userResult = storeTwo.user;
   return userResult;
 }
